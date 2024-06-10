@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 Axis</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg width="600" height="200"></svg>
+  <script>
+  </script>
+</body>
+
+
+<script>
+    // Time Scale: Create the x-axis inside an SVG element. 
+    // Set the scale to scaleTime and label the ticks with dates from a given time range, 
+    // e.g., [2019-01-01, 2019-12-31].
+    
+  // Select the SVG element
+  const svg = d3.select("svg");
+
+  const startDate = new Date("2019-01-01");
+  const endDate = new Date("2019-12-31");
+
+// Define the scale for the x-axis
+const xScale = d3.scaleTime()
+.domain([startDate, endDate])
+.range([0, 600]);
+  
+// Create the x-axis
+const xAxis = d3.axisBottom(xScale)
+.tickFormat(d3.timeFormat("%Y-%m-%d"));
+
+// Append the x-axis to the SVG element
+svg.append("g")
+.attr("transform", "translate(0, ${height - 50})")
+.call(xAxis);
+    
+</script>
+</html>
