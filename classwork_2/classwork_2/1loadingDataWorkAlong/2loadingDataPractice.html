@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<body>
+    
+</body>
+
+<script>
+    // Load the dataset grade.json from the data folder    
+    d3.csv("data/grade.json").then(dataRead);
+
+    function dataRead(data){
+        console.log(data);
+        console.log(d3.max(data, d => d.examGrade));
+
+        // console.log(d3.max(data, d.examGrade));
+        // console.log(d3.maxIndex(data, d.examGrade));
+
+        // var highestGradeIndex = d3.maxIndex(data, function(d){+d.examGrade});
+        // console.log('The index with the highest grade' + d3.max(data, d => d.examGrade) + 'is' + data[examGrade].student);
+        
+        // highestGradeIndex);
+        // d3.max(data, d => d.grade);
+        // //Print the name of the student with the highest grade
+        // d3.maxIndex(data, d => d.grade);
+        // console.log('The student with the highest grade is' + data[examGrade].student);
+        //     //there are several ways to do this but I will use d3.maxIndex 
+    }
+</script>
+</html>
