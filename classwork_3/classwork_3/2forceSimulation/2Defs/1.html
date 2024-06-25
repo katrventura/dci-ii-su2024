@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <svg>
+        <defs>
+            <!-- <linearGradient>: creates a smooth transition of colors between two or more points in a linear direction. -->
+              <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">  
+                <stop offset="0%" stop-color="#FF0000" /> 
+                <stop offset="100%" stop-color="#0000FF" />
+                </linearGradient>
+        </defs>
+        
+        <rect x="50" y="50" width="200" height="100" fill="url(#myGradient)" />
+        <!-- the way to apply a def to an svg shape is using the syntax "url(#idName)" -->
+      </svg>
+      
+
+       <svg>
+        <defs>
+        <!-- pattern can be used to fill shapes or backgrounds with a repeating image or design. -->
+          <pattern id="myPattern" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+         <!-- x="0" y="0": the starting position of the pattern. In this case, the pattern starts at the top-left corner of the canvas.
+                width="10" height="10": determine the size of the pattern. The small canvas that has the shape that is repeating is 10x10-->
+
+            <circle cx="10" cy="4" r="4" fill="black" />
+            <!-- cx="2.5" cy="2.5": the center coordinates of the circle within the pattern -->
+          </pattern>
+        </defs>
+        
+        <rect x="50" y="50" width="400" height="100" fill="url(#myPattern)" />
+      </svg>
+       
+
+      <!--  patternUnits attribute is like a rule that tells you how to draw that pattern.
+
+            There are two possible values: objectBoundingBox, and userSpaceOnUse 
+
+            objectBoundingBox: You can either make the pattern adjust to the object's size  
+            userSpaceOnUse: keep it the same size of the pattern and repeat it as many times as needed to fill the shape. -->
+    <svg>
+        <defs>
+        <pattern id="image" height="100%" width="100%" patternContentUnits="objectBoundingBox">
+            <!-- In this case, the pattern will cover the entire available space since the width and height are set to 100%. -->
+                <image href="images/Alice.png" width="1" height="1" preserveAspectRatio = "none"/>
+              </pattern>
+        </defs>          
+        <rect x="50" y="50" width="400" height="100" fill="url(#image)" />
+    </svg>      
+</body>
+</html>
+
+

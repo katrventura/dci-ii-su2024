@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+<style>
+    svg {
+        background-color: #eee;
+    }
+</style>
+<body>
+    <button id="split">Split by Gamer</button>
+    <button id="combine">Combine</button>
+
+    <div id="graphic"></div>
+
+    <!-- <svg width="500" height="200">
+        <rect x="380" y="0" width="20" height="20" fill="#F29C50"></rect>
+        <text x="410" y="15" fill="black">Gamer</text>
+        <rect x="380" y="25" width="20" height="20" fill="#FE6B58"></rect>
+        <text x="410" y="40" fill="black">Non-Gamer</text>
+    </svg> -->
+</body>
+
+<script>
+    // Load the dataset
+    var dataSet = d3.csv('media.csv').then(loadData);
+    
+    // Define the width and height of the SVG
+    var width = 900;
+    var height = 900;
+
+    // Define the size of the rectangles
+    var rectWidth = 27;  // Keeping it relatively small
+    var rectHeight = 48; // 9:16 aspect ratio
+
+    // Create the force simulation
+    var simulation = d3.forceSimulation();
+
+    // Set the initial x and y forces to center the rectangles
+    simulation.force('x', d3.forceX(width / 2));
+    simulation.force('y', d3.forceY(height/2));
+
+    // Define the collision force
+    var forceCollide = simulation.force('collide', d3.forceCollide().radius(function(d) {
+        return Math.sqrt((rectWidth/2)**2 + (rectHeight/2)**2) + 1;
+    }).strength(0.09));
+
+    // Create the SVG
+    var svg = d3.select('#graphic')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g');
+
+    // Load the data
+    function loadData(data) {
+        console.log(data);
+        
+                // Convert playCount to number
+                data.forEach(d => {
+            d.playCount = +d.playCount;
+        });
+
+        // Create scale for rectangle size
+        var sizeScale = d3.scaleSqrt()
+            .domain(d3.extent(data, d => d.playCount))
+            .range([20, 60]);  // Adjust this range to change the min and max sizes
+
+        // Define the collision force
+        var forceCollide = simulation.force('collide', d3.forceCollide().radius(function(d) {
+            return sizeScale(d.playCount) * 0.707 + 1;  // 0.707 is approximately sqrt(2)/2
+        }).strength(0.09));
+
+        // Create the defs for patterns
+        var defs = svg.append('defs');
+
+        defs.selectAll(".video-image")
+            .data(data)
+            .join("pattern")
+            .attr("class", "video-image")
+            .attr('id', function(d) {
+                return d.id;
+            })
+            .attr('height', '100%')
+            .attr('width', '100%')
+            .attr('patternContentUnits', 'objectBoundingBox')
+            .append('image')
+            .attr('href', function(d) {
+                return d.image_url;
+            })
+            .attr('width', 1)
+            .attr('height', 1)
+            .attr('preserveAspectRatio', 'none');
+
+        // Create rectangles for each data point
+        var rects = svg.selectAll(".bubble")
+                        .data(data)
+                        .join("rect")
+                        .attr("class", "bubble")
+                        .attr('width', d => sizeScale(d.playCount))
+                        .attr('height', d => sizeScale(d.playCount) * 16/9)
+                        // .attr('stroke', function(d) {
+                        //     return d.gamer == 'gamer' ? '#F29C50' : '#FE6B58';
+                        // })
+                        // .attr('stroke-width', 2)
+                        .attr('fill', function(d) {
+                            return 'url("#' + d.id + '")';
+                        })
+                        .attr('opacity', 0.7)
+                        .on('mouseover', function(e, d) {
+                            console.log(d.uniqueId + ': ' + d.playCount);
+                        });
+
+
+        // Start the simulation and update rectangle positions on each tick
+        simulation.nodes(data)
+                    .on('tick', ticked);
+
+        function ticked() {
+            rects.attr('x', function(d) {
+                return d.x - sizeScale(d.playCount) / 2;
+            })
+            .attr('y', function(d) {
+                return d.y - sizeScale(d.playCount) * 16/9 / 2;
+            });
+        }
+
+        d3.select('#combine').on('click', function() {
+            console.log('combine');
+            simulation.force('x', d3.forceX(width / 2).strength(0.05));
+            simulation.force('y', d3.forceY(height/2).strength(0.05));
+            simulation.alpha(1).restart();
+        });
+
+        d3.select('#split').on('click', function() {
+            simulation.force('x', d3.forceX(function(d) {
+                return d.gamer == 'gamer' ? width/4 : width*3/4;
+            }).strength(0.05));
+            simulation.alpha(1).restart();
+        });
+    }
+</script>
+
+</html>

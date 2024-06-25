@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+    svg {
+        background-color: #eee;
+    }
+</style>
+
+<body>
+    <div id="graphic"></div>
+</body>
+
+<script>
+
+    //load the data
+    var dataSet = d3.json('data/grade.json').then(loadData)
+
+    var width = 900
+    var height = 500
+
+    function loadData(data) {
+        //im going to create an svg and inside that svg, im going to create a circle for every single one of these data points
+        console.log(data)
+
+        var svg = d3.select('#graphic')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+
+        // PUT CODE HERE, select the svg variable you created above, and join circles with the data, with a radius attribute of 10.
+
+
+
+
+    }
+
+</script>
+
+</html>

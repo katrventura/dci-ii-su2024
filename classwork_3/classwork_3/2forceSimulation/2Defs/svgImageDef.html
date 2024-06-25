@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        svg {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="graphic"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script>
+            var width = 500;
+            var height = 500;
+
+            var radiusScale = d3.scaleSqrt().domain([0, 100]).range([1, 50])
+            // Load the data
+            d3.json('data/grade.json').then(loadData);
+
+            function loadData(data) {
+                var svg = d3.select('#graphic')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height);
+                
+                //we are going to create a defs element within the svg element and give it the properties to fill the circles with images. 
+                //for now we are only going to work with one image. 
+                // <pattern id="myPattern" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+
+                var defs = svg.append('defs')
+                            .append('pattern')
+                            .attr('id', 'image2')//
+                            .attr('height', '100%')
+                            .attr('width', '100%')
+                            .attr('patternContentUnits', 'objectBoundingBox')
+                            .append('image')
+                            .attr('href', 'images/Alice.png')//
+                            .attr('width', '1')
+                            .attr('height', '1')
+                            .attr('preserveAspectRatio', 'none')
+
+
+                svg.selectAll('bubble')
+                    .data(data)
+                    .join('circle')
+                    .attr('r', function(d){return radiusScale(d.examGrade)})
+                    .attr('fill', 'url(#image2)'); 
+
+                var simulation = d3.forceSimulation() 
+
+                var forceX = simulation.force('x', d3.forceX(width/2))
+                var forceY = simulation.force('y', d3.forceY(height/2))
+
+                var forceCollide = simulation.force('collide', d3.forceCollide(function(d) {
+                    return radiusScale(d.examGrade);}).strength(0.09));
+
+                simulation.nodes(data)
+                    .on('tick', ticked) 
+
+                function ticked() {
+                    svg.selectAll('circle')
+                        .attr('cx', function(d) {
+                            return d.x
+                        })
+                        .attr('cy', function(d) {
+                            return d.y
+                        })}                    
+            }
+        
+    </script>
+</body>
+</html>

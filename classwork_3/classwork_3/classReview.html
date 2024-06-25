@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<body>
+    <svg width = 500 height = 500></svg>
+</body>
+
+
+<script>
+    // Create a function called handleMouseOver that:
+    // selects the svg
+    // joins a series of 50x50 squares with the dataSet
+    // positions them at an x coordinate of 50
+    // positions them at a regular y interval
+    // adjusts opacity according to the data value
+    // prints out the value upon mouseover
+
+    var dataSet = [10, 20, 30, 40, 50]
+
+    const rects = d3.select('svg')
+        .selectAll('rect')
+        .data(dataSet)
+        .join('rect')
+        .attr('x', 50)
+        .attr('y', (d, i) => i * 100)
+        .attr('width', 50)
+        .attr('height', 50)
+        .attr('fill', 'blue')
+        .on("mouseover", handleMouseOver)
+        .attr('opacity', d => d / 50)
+
+    // PUT YOUR CODE HERE
+    function handleMouseOver(event, d) {
+            d3.select(this).attr("fill", d)
+        }
+
+</script>
+</html>

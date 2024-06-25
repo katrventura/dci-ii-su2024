@@ -1,0 +1,22 @@
+[
+  { "student": "Maina", "studyHours": 0, "examGrade": 0, "subject": "non-STEM", "image_url": "images/Maina.png" },
+  { "student": "Alice", "studyHours": 44, "examGrade": 50, "subject": "non-STEM", "image_url": "images/Alice.png" },
+  { "student": "Bob", "studyHours": 60, "examGrade": 99, "subject": "STEM", "image_url": "images/Bob.png" },
+  { "student": "Charlie", "studyHours": 23, "examGrade": 50, "subject": "STEM", "image_url": "images/Charlie.png" },
+  { "student": "David", "studyHours": 15, "examGrade": 34, "subject": "non-STEM", "image_url": "images/David.png" },
+  { "student": "Emma", "studyHours": 10, "examGrade": 20, "subject": "non-STEM", "image_url": "images/Emma.png" },
+  { "student": "Frank", "studyHours": 25, "examGrade": 65, "subject": "non-STEM", "image_url": "images/Frank.png" },
+  { "student": "Grace", "studyHours": 46, "examGrade": 35, "subject": "STEM", "image_url": "images/Grace.png" },
+  { "student": "Hannah", "studyHours": 30, "examGrade": 30, "subject": "non-STEM", "image_url": "images/Hannah.png" },
+  { "student": "Isaac", "studyHours": 8, "examGrade": 10, "subject": "non-STEM", "image_url": "images/Isaac.png" },
+  { "student": "Julia", "studyHours": 35, "examGrade": 79, "subject": "STEM", "image_url": "images/Julia.png" },
+  { "student": "Kevin", "studyHours": 52, "examGrade": 65, "subject": "STEM", "image_url": "images/Kevin.png" },
+  { "student": "Lily", "studyHours": 39, "examGrade": 50, "subject": "non-STEM", "image_url": "images/Lily.png" },
+  { "student": "Mia", "studyHours": 16, "examGrade": 30, "subject": "non-STEM", "image_url": "images/Mia.png" },
+  { "student": "Noah", "studyHours": 30, "examGrade": 53, "subject": "non-STEM", "image_url": "images/Noah.png" },
+  { "student": "Olivia", "studyHours": 40, "examGrade": 56, "subject": "STEM", "image_url": "images/Olivia.png" },
+  { "student": "Patrick", "studyHours": 45, "examGrade": 75, "subject": "non-STEM", "image_url": "images/Patrick.png" },
+  { "student": "Quinn", "studyHours": 14, "examGrade": 49, "subject": "STEM", "image_url": "images/Quinn.png" },
+  { "student": "Ryan", "studyHours": 23, "examGrade": 59, "subject": "non-STEM", "image_url": "images/Ryan.png" },
+  { "student": "Summer", "studyHours": 65, "examGrade": 100, "subject": "STEM", "image_url": "images/Summer.png" }
+]

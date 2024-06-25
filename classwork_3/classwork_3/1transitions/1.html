@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<body>
+    <div>
+        <svg width="960px" height="400px">
+            <rect id = 'my_rect' x="10" y="200" width="200" height="30" stroke="black" fill="#F29C50"/>
+        </svg>
+      </div>
+    
+</body>
+
+<script>
+    //increase the width of the rectangle with a transition of 1 second
+    d3.select('rect')
+        .transition()
+        .duration(5000)
+        .attr('width', 400)
+        .transition()
+        .duration(1)
+        .attr('fill', 'blue')
+
+</script>
+</html>

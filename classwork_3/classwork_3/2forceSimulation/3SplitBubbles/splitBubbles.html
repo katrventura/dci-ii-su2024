@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<body>
+    <button id = "split">Split by Subject</button>
+    <button id = "combine">Combine</button>
+
+
+    <div id="graphic"></div>
+
+    <svg width = 500 height="200">
+        <circle cx="400" cy="10" r="10" fill = "#F29C50"></circle>
+        <text x="420" y="15" fill="black">STEM</text>
+        <circle cx="400" cy="35" r="10" fill = "#FE6B58"></circle>
+        <text x="420" y="40" fill="black">Humanities</text>
+    </svg>
+</body>
+
+<script>
+    // Load the dataset
+    var dataSet = d3.json('data/grade.json').then(loadData);
+    
+    // Define the width and height of the SVG
+    var width = 900;
+    var height = 500;
+
+    // Define the radius scale for the circles
+    var radiusScale = d3.scaleSqrt()
+                            .domain([0, 100])
+                            .range([3, 50]);
+
+    // Create the force simulation
+    var simulation = d3.forceSimulation();
+
+    // Set the initial x and y forces to center the circles
+    simulation.force('x', d3.forceX(width / 2));
+    simulation.force('y', d3.forceY(height/2));
+
+    // Define the collision force
+    var forceCollide = simulation.force('collide', d3.forceCollide(function(d) {
+        return radiusScale(d.examGrade)+2;
+    }).strength(0.09));
+
+    // Create the SVG
+    var svg = d3.select('#graphic')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g');
+
+    // Load the data
+    function loadData(data) {
+        console.log(data);
+        
+        // Create the defs for patterns
+        var defs = svg.append('defs');
+
+        defs.selectAll(".students-image")
+            .data(data)
+            .join("pattern")
+            .attr("class", "students-image")
+            .attr('id', function(d) {
+                return d.student;
+            })
+            .attr('height', '100%')
+            .attr('width', '100%')
+            .attr('patternContentUnits', 'objectBoundingBox')
+            .append('image')
+            .attr('href', function(d) {
+                return d.image_url;
+            })
+            .attr('width', 1)
+            .attr('height', 1)
+            .attr('preserveAspectRatio', 'none');
+
+        // Create circles for each data point
+        var circles = svg.selectAll(".bubble")
+                        .data(data)
+                        .join("circle")
+                        .attr("class", "bubble")
+                        .attr('r', function(d) {
+                            return radiusScale(d.examGrade);
+                        })
+                        .attr('stroke', function(d){if(d.subject == 'STEM'){return '#F29C50'}else{return '#FE6B58'}})
+                        .attr('stroke-width', 3)
+                        .attr('fill', function(d) {
+                            return ('url("#' + d.student + '")');
+                        })
+                        .on('mouseover', function(e, d) {
+                            console.log(d.student);
+                        });
+
+        // Start the simulation and update circle positions on each tick
+        simulation.nodes(data)
+                    .on('tick', ticked);
+
+        function ticked() {
+            circles.attr('cx', function(d) {
+                return d.x;
+            })
+            .attr('cy', function(d) {
+                return d.y;
+            });
+        }
+
+        d3.select('#combine').on('click', function() {
+            simulation.force('x', d3.forceX(width / 2));
+            simulation.force('y', d3.forceY(height/2));
+        });
+
+
+        // ADD THE BUTTON INTERACTION HERE
+        d3.select('#combine').on('click', function() {
+            console.log('combine');
+
+        //combine the bubbles back to the center
+        simulation.force('x', d3.forceX(width / 2).strength(0.05));
+        simulation.force('y', d3.forceY(height/2).strength(0.05));
+        simulation.alpha(1).restart();
+            
+        });
+
+        d3.select('#split').on('click', function() {
+            // console.log('split');
+            simulation.force('x', d3.forceX(function(d) {
+                if(d.subject == 'STEM') {
+                    return width/4;
+                } else {
+                    return width*3/4;
+                }
+
+            }).strength(0.05));
+            simulation.alpha(1).restart();
+
+        })
+           
+    }
+</script>
+</html>
